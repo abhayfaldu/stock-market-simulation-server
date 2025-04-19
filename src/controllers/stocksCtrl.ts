@@ -1,15 +1,9 @@
-import express from 'express'
-import { DB } from '../config/db'
-import { SocketServer } from '../config/socket'
+import { DB } from "../services/db";
+import { Request, Response } from 'express'
 
-const routes = express.Router()
 const db = DB.getInstance()
 
-routes.get('/users', (req, res) => {
-  res.json(db.getUsers())
-})
-
-routes.post('/buy', (req, res) => {
+const getStocks = (req: Request, res: Response) => {
   const { userId, stockId, quantity } = req.body
 
   const validationError = validateTradeBody(req.body)
@@ -56,9 +50,9 @@ routes.post('/buy', (req, res) => {
   }
   db.updateHoldings(holdings)
   res.json({ success: true })
-})
+}
 
-routes.post('/sell', (req, res) => {
+const sellStock = (req: Request, res: Response) => {
   const { userId, stockId, quantity } = req.body
 
   const validationError = validateTradeBody(req.body)
@@ -116,7 +110,7 @@ routes.post('/sell', (req, res) => {
   } catch (error) {
     res.status(500).json({ message: 'Unexpected error', error })
   }
-})
+}
 
 function validateTradeBody(body: any) {
   const { userId, stockId, quantity } = body
@@ -129,4 +123,4 @@ function validateTradeBody(body: any) {
   return false
 }
 
-export default routes
+export default { getStocks, sellStock }

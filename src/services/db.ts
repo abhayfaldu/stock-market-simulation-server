@@ -1,4 +1,4 @@
-import { SocketServer } from './socket'
+import { SocketServer } from './socketService'
 import { Holding, Stock, User } from '../types/types'
 
 const generateRandomNumber = (min: number, max: number): number => {

@@ -1,5 +1,4 @@
-import { DB } from '../config/db'
-import { SocketServer } from '../config/socket'
+import { DB } from './db'
 import { Stock } from '../types/types'
 
 export class StockService {
@@ -23,24 +22,20 @@ export class StockService {
   }
 
   public updateStockPrices(): void {
-    const stocks = this.db.getStocks()
-    const updatedStocks = stocks.map((stock: Stock) => {
-      const change = this.getRandomPriceChange()
-      const newPrice = Math.max(stock.price * (1 + change), 0.01)
-      return {
-        ...stock,
-        price: +newPrice.toFixed(2)
-      }
-    })
-    this.db.updateStocks(updatedStocks)
-  }
-
-  public startPriceUpdates(): void {
     if (this.updateInterval) {
       clearInterval(this.updateInterval)
     }
     this.updateInterval = setInterval(() => {
-      this.updateStockPrices()
+      const stocks = this.db.getStocks()
+      const updatedStocks = stocks.map((stock: Stock) => {
+        const change = this.getRandomPriceChange()
+        const newPrice = Math.max(stock.price * (1 + change), 0.01)
+        return {
+          ...stock,
+          price: +newPrice.toFixed(2)
+        }
+      })
+      this.db.updateStocks(updatedStocks)
     }, 1000)
   }
 }
