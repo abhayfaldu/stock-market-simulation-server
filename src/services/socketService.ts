@@ -2,6 +2,7 @@ import { Server, Socket } from 'socket.io'
 import { Server as HttpServer } from 'http'
 import { DB } from './db'
 import { LeaderboardPayload } from '../types/types'
+import config from '../config/config'
 
 export class SocketServer {
   private static instance: SocketServer
@@ -11,7 +12,7 @@ export class SocketServer {
   private constructor(httpServer: HttpServer) {
     this.io = new Server(httpServer, {
       cors: {
-        origin: 'http://localhost:3000',
+        origin: config.frontendUrl,
         methods: ['GET', 'POST'],
       },
     })

@@ -6,6 +6,7 @@ import { SocketServer } from './services/socketService';
 import { StockService } from './services/StockService';
 import stockRoutes from './routes/stockRoutes';
 import userRoutes from './routes/userRoutes';
+import config from './config/config';
 
 const app = express();
 
@@ -19,7 +20,7 @@ app.use(cors());
 app.use('/stocks', stockRoutes)
 app.use('/users', userRoutes)
 
-const PORT = process.env.PORT || 3001
+const PORT = config.port || 3001
 httpServer.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
   stockService.updateStockPrices()
