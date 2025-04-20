@@ -59,7 +59,7 @@ export class SocketServer {
         return {
           userId: user.id,
           name: user.name,
-          profit: user.realizedProfit + unrealizedProfit,
+          profit: unrealizedProfit,
         }
       })
       .sort((a, b) => b.profit - a.profit)
